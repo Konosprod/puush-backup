@@ -35,8 +35,9 @@ namespace WindowsFormsApplication3
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void backupPublic(string urlbase)
         {
+            Directory.CreateDirectory(path + "/Public/");
             if (textBox1.Text != "")
             {
                 WebClientEx wb = new WebClientEx();
@@ -46,15 +47,23 @@ namespace WindowsFormsApplication3
                 Regex nom = new Regex("_blank\" title=\".*\"");
                 Regex urls = new Regex("\\('[A-Za-z0-9]*'\\)\"");
                 src = wb.DownloadString("http://puush.me/login/go/?k=" + key);
+                src = wb.DownloadString("http://puush.me" + urlbase);
 
-                pages = nbPages.Match(src).ToString();
-                pages = pages.Remove(pages.LastIndexOf('>'));
-                pages = pages.Remove(pages.LastIndexOf('<'));
-                pages = pages.Substring(pages.IndexOf('>')+1);
+                if (nbPages.IsMatch(src))
+                {
+                    pages = nbPages.Match(src).ToString();
+                    pages = pages.Remove(pages.LastIndexOf('>'));
+                    pages = pages.Remove(pages.LastIndexOf('<'));
+                    pages = pages.Substring(pages.IndexOf('>') + 1);
+                }
+                else
+                {
+                    pages = "1";
+                }
 
                 for (int i = 0; i < int.Parse(pages); i++)
                 {
-                    src = wb.DownloadString("http://puush.me/account?page=" + (i + 1));
+                    src = wb.DownloadString("http://puush.me/"+ urlbase + "&page=" + (i + 1));
                     for (int j = 0; j < urls.Matches(src).Count; j++)
                     {
                         String name = nom.Matches(src)[j].ToString();
@@ -64,9 +73,118 @@ namespace WindowsFormsApplication3
                         url = url.Remove(0, 2);
                         url = url.Remove(url.Length - 3);
 
-                        wb.DownloadFile("http://puu.sh/" + url, path + "/" + name);
+                        wb.DownloadFile("http://puu.sh/" + url, path + "/Public/" + name);
                     }
                 }
+            }
+        }
+
+        private void backupPrivate(string urlbase)
+        {
+            if (textBox1.Text != "")
+            {
+                Directory.CreateDirectory(path + "/Private/");
+                WebClientEx wb = new WebClientEx();
+                String src = "";
+                String pages = "";
+                Regex nbPages = new Regex("@?page=[0-9]*\">[0-9]*</a><a class=\"noborder\"");
+                Regex nom = new Regex("_blank\" title=\".*\"");
+                Regex urls = new Regex("\\('[A-Za-z0-9]*'\\)\"");
+                src = wb.DownloadString("http://puush.me/login/go/?k=" + key);
+                src = wb.DownloadString("http://puush.me" + urlbase);
+
+                if (nbPages.IsMatch(src))
+                {
+                    pages = nbPages.Match(src).ToString();
+                    pages = pages.Remove(pages.LastIndexOf('>'));
+                    pages = pages.Remove(pages.LastIndexOf('<'));
+                    pages = pages.Substring(pages.IndexOf('>') + 1);
+                }
+                else
+                {
+                    pages = "1";
+                }
+
+                for (int i = 0; i < int.Parse(pages); i++)
+                {
+                    src = wb.DownloadString("http://puush.me/" + urlbase + "&page=" + (i + 1));
+                    for (int j = 0; j < urls.Matches(src).Count; j++)
+                    {
+                        String name = nom.Matches(src)[j].ToString();
+                        String url = urls.Matches(src)[j].ToString();
+                        name = name.Remove(0, 15);
+                        name = name.Remove(name.LastIndexOf('(') - 1);
+                        url = url.Remove(0, 2);
+                        url = url.Remove(url.Length - 3);
+
+                        wb.DownloadFile("http://puush.me/account/view/" + url, path + "/Private/" + name);
+                    }
+                }
+            }
+        }
+
+        private void backupGallery(string urlbase)
+        {
+            if (textBox1.Text != "")
+            {
+                Directory.CreateDirectory(path + "/Gallery/");
+                WebClientEx wb = new WebClientEx();
+                String src = "";
+                String pages = "";
+                Regex nbPages = new Regex("@?page=[0-9]*\">[0-9]*</a><a class=\"noborder\"");
+                Regex nom = new Regex("_blank\" title=\".*\"");
+                Regex urls = new Regex("\\('[A-Za-z0-9]*'\\)\"");
+                src = wb.DownloadString("http://puush.me/login/go/?k=" + key);
+                src = wb.DownloadString("http://puush.me" + urlbase);
+
+                if (nbPages.IsMatch(src))
+                {
+                    pages = nbPages.Match(src).ToString();
+                    pages = pages.Remove(pages.LastIndexOf('>'));
+                    pages = pages.Remove(pages.LastIndexOf('<'));
+                    pages = pages.Substring(pages.IndexOf('>') + 1);
+                }
+                else
+                {
+                    pages = "1";
+                }
+
+                for (int i = 0; i < int.Parse(pages); i++)
+                {
+                    src = wb.DownloadString("http://puush.me/" + urlbase + "&page=" + (i + 1));
+                    for (int j = 0; j < urls.Matches(src).Count; j++)
+                    {
+                        String name = nom.Matches(src)[j].ToString();
+                        String url = urls.Matches(src)[j].ToString();
+                        name = name.Remove(0, 15);
+                        name = name.Remove(name.LastIndexOf('(') - 1);
+                        url = url.Remove(0, 2);
+                        url = url.Remove(url.Length - 3);
+
+                        wb.DownloadFile("http://puu.sh/" + url, path + "/Gallery/" + name);
+                    }
+                }
+            }
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            WebClientEx wb = new WebClientEx();
+            Regex r = new Regex(@"/account/\?pool=[0-9]*");
+            String src = wb.DownloadString("http://puush.me/login/go/?k=" + key);
+
+            if (checkBoxPublic.Checked)
+            {
+                backupPublic(r.Matches(src)[0].ToString());
+            }
+            if (checkBoxPrivate.Checked)
+            {
+                backupPrivate(r.Matches(src)[1].ToString());
+            }
+            if (checkBoxGallery.Checked)
+            {
+                backupGallery(r.Matches(src)[2].ToString());
             }
         }
 

@@ -37,12 +37,15 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.checkBoxPublic = new System.Windows.Forms.CheckBox();
+            this.checkBoxPrivate = new System.Windows.Forms.CheckBox();
+            this.checkBoxGallery = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(129, 84);
+            this.button2.Location = new System.Drawing.Point(129, 159);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -109,11 +112,46 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // checkBoxPublic
+            // 
+            this.checkBoxPublic.AutoSize = true;
+            this.checkBoxPublic.Checked = true;
+            this.checkBoxPublic.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxPublic.Location = new System.Drawing.Point(129, 76);
+            this.checkBoxPublic.Name = "checkBoxPublic";
+            this.checkBoxPublic.Size = new System.Drawing.Size(55, 17);
+            this.checkBoxPublic.TabIndex = 9;
+            this.checkBoxPublic.Text = "Public";
+            this.checkBoxPublic.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxPrivate
+            // 
+            this.checkBoxPrivate.AutoSize = true;
+            this.checkBoxPrivate.Location = new System.Drawing.Point(129, 100);
+            this.checkBoxPrivate.Name = "checkBoxPrivate";
+            this.checkBoxPrivate.Size = new System.Drawing.Size(50, 17);
+            this.checkBoxPrivate.TabIndex = 10;
+            this.checkBoxPrivate.Text = "Privé";
+            this.checkBoxPrivate.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxGallery
+            // 
+            this.checkBoxGallery.AutoSize = true;
+            this.checkBoxGallery.Location = new System.Drawing.Point(129, 124);
+            this.checkBoxGallery.Name = "checkBoxGallery";
+            this.checkBoxGallery.Size = new System.Drawing.Size(59, 17);
+            this.checkBoxGallery.TabIndex = 11;
+            this.checkBoxGallery.Text = "Galerie";
+            this.checkBoxGallery.UseVisualStyleBackColor = true;
+            // 
             // mainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 119);
+            this.ClientSize = new System.Drawing.Size(341, 196);
+            this.Controls.Add(this.checkBoxGallery);
+            this.Controls.Add(this.checkBoxPrivate);
+            this.Controls.Add(this.checkBoxPublic);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
@@ -142,6 +180,9 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.CheckBox checkBoxPublic;
+        private System.Windows.Forms.CheckBox checkBoxPrivate;
+        private System.Windows.Forms.CheckBox checkBoxGallery;
     }
 }
 
